@@ -1,0 +1,115 @@
+$(document).ready(function(){
+
+var mapOptions = {
+                    // How zoomed in you want the map to start at (always required)
+                    zoom: 11,
+
+                    // The latitude and longitude to center the map (always required)
+                    center: new google.maps.LatLng(40.6700, -73.9400), // New York
+
+                    // How you would like to style the map. 
+                    // This is where you would paste any style found on Snazzy Maps.
+                    styles: [{"featureType":"all","elementType":"geometry.stroke","stylers":[{"color":"#ff0064"}]},{"featureType":"all","elementType":"labels.text.fill","stylers":[{"color":"#03304f"}]},{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#03304f"}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},{"featureType":"landscape","elementType":"geometry.stroke","stylers":[{"color":"#ff0064"}]},{"featureType":"landscape","elementType":"labels.text.fill","stylers":[{"color":"#03304f"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#41b2ec"},{"visibility":"on"}]}]
+                };
+
+	var locations = [
+      ['<h4> Blebox </h4><p> Guldenstraat 46 </p> <p>  511RZ Eindhoven</p><p><a href="#"> www.test.pl </a></p>', -33.890542, 151.274856],
+      ['Coogee Beach', -33.923036, 151.259052],
+      ['Cronulla Beach', -34.028249, 151.157507],
+      ['Manly Beach', -33.80010128657071, 151.28747820854187],
+      ['Maroubra Beach', -33.950198, 151.259302]
+    ];
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: new google.maps.LatLng(-33.92, 151.25),
+      styles: [{"featureType":"all","elementType":"geometry.stroke","stylers":[{"color":"#ff0064"}]},{"featureType":"all","elementType":"labels.text.fill","stylers":[{"color":"#03304f"}]},{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#03304f"}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},{"featureType":"landscape","elementType":"geometry.stroke","stylers":[{"color":"#ff0064"}]},{"featureType":"landscape","elementType":"labels.text.fill","stylers":[{"color":"#03304f"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#41b2ec"},{"visibility":"on"}]}]
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+    var arrMarkers = {};
+    var image = 'img/marker.png';
+
+    for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map,
+        icon: image
+      });
+
+      arrMarkers[i] = marker;
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+          map.setZoom(15);
+          map.setCenter(marker.getPosition());
+        }
+      })(marker, i));
+
+    }
+
+
+  $('.locations-holder .address-row h4').click(function(){
+    var marker_num = $(this).parent().attr('data-marker');
+    map.setZoom(15);
+    map.setCenter(arrMarkers[marker_num].getPosition());
+    infowindow.setContent(locations[marker_num][0]);
+    infowindow.open(map, arrMarkers[marker_num]);
+  })
+
+
+  $('.google-maps-module .searcher input[name="gmSearch"]').on('input',function() {
+
+    if (this.value == '') {
+      return 0;
+    }
+
+    var val = this.value.toLowerCase();
+    var elements = $('.locations-holder .address-row');
+    var results = [];
+    var output;
+
+    for(var i=0; i < elements.length; i++) {
+      var zipcode = elements.eq(i).find('.zipcode').text().toLowerCase();
+      var city = elements.eq(i).find('.city').text().toLowerCase();
+      
+      var search_zipcode = zipcode.search(val);
+      var search_city = city.search(val);
+      // if(myExp.search(myExp)) {
+      if(search_zipcode != -1 || search_city != -1) {
+        results.push(elements.eq(i));
+      }
+      // }
+      
+    }
+
+
+    output = '<ul>';
+    for(j=0;j < results.length; j++) {
+      output += '<li ' + 'data-marker="' +  results[j].attr('data-marker') + '">'
+                    + '<strong class="title">' + results[j].find('h4').text() + ' - </strong>'
+                    + results[j].find('.zipcode').text() + '<strong>' 
+                    + results[j].find('.city').text() 
+                    + '</strong></li>' ;
+    }
+    output += '</ul>';
+
+    $('.google-maps-module .searcher .results').html(output);
+
+  });
+
+  
+  $(document).on('click', '.google-maps-module .searcher .results ul li', function(){ 
+    var marker = $(this).attr('data-marker');
+    $(this).parent().remove();
+    $('.locations-holder .address-row[data-marker="' + marker + '"] h4').click();
+  });
+
+  $(document).on('click','body', function() {
+    $('.google-maps-module .searcher .results ul').remove();
+  });
+});

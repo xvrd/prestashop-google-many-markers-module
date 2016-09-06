@@ -1,0 +1,195 @@
+.google-maps-module {
+  max-width: 1106px;
+  width: 100%;
+  margin: 50px auto;
+  font-family: 'Lato';
+
+  .searcher {
+    width: 100%;
+    padding: 30px 0;
+
+    label {
+      text-transform: uppercase;
+      color: #1b9dd9;
+      display: block;
+      text-indent: 15px;
+      margin: 13px 0 10px;
+      letter-spacing: 1.5px;
+      font-weight: 300;
+    }
+
+    .search-input {
+      position: relative;
+      max-width: 308px;
+      width: 100%;
+      
+      input {
+        padding: 15px;
+        border: 1px solid #1b9dd9;
+        border-radius: 30px;
+        display: inline-block;
+        font-size: 13px;
+        width: 100%;
+
+        &:focus {
+          outline: 0; 
+        }
+      }
+
+      &:after {
+        content: "\f002";
+        font-family: "FontAwesome";
+        display: inline-block;
+        position: absolute;
+        font-size: 23px;
+        right: 17px;
+        top: 12px;
+        color: #ff0063;
+      }
+    }
+
+    .results {
+      ul {
+          position: absolute;
+          background: white;
+          -webkit-box-shadow:inset 0px 0px 0px 1px #c9eeff;
+          -moz-box-shadow:inset 0px 0px 0px 1px #c9eeff;
+          box-shadow:inset 0px 0px 0px 1px #c9eeff;
+          -webkit-margin-before: 0em;
+          -webkit-margin-after: 0em;
+          -webkit-margin-start: 0px;
+          -webkit-margin-end: 0px;
+          -webkit-padding-start: 0px;
+          width: 100%;
+          list-style-type: none;
+          margin-left: 0px;
+          padding: 0 17px;
+          max-height: 300px;
+          overflow-x: hidden;
+          
+          &::-webkit-scrollbar {
+            width: 6px;
+          }
+           
+          &::-webkit-scrollbar-track {
+              -webkit-box-shadow: none; 
+              border-radius: 0px;
+
+          }
+           
+          &::-webkit-scrollbar-thumb {
+              border-radius: 0px;
+              -webkit-box-shadow: none; 
+              background-color: #44aee0;
+          }
+
+          li {
+            padding: 10px;
+            cursor: pointer;
+
+            .title {
+              color: #03304F;
+            }
+
+            &:hover {
+              background: #c9eeff;
+            }
+          }
+      }
+    }
+  }
+
+
+  .locations-holder {
+    float: left;
+    max-width: 339px;
+    width: 100%;
+    height: 530px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+     
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: none; 
+        border-radius: 0px;
+
+    }
+     
+    &::-webkit-scrollbar-thumb {
+        border-radius: 0px;
+        -webkit-box-shadow: none; 
+        background-color: #44aee0;
+    }
+
+
+    .address-row { 
+      float: left;
+      width: 100%;
+      // border: 1px solid black;
+      margin-bottom: 30px;
+      
+      h4 {
+        color: #44aedf;
+        margin: 5px;
+        text-decoration: underline;
+        text-transform: uppercase;
+        cursor: pointer;
+        
+        &:before {
+          content: "";
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background-repeat: no-repeat;
+          background-image: url('../img/marker.png');
+          background-position: left center;
+        }
+      }
+
+      address {
+        font-style: normal;
+      }
+    }
+
+  }
+
+  #map {
+    width: 650px;
+    height: 530px;
+    position: relative;
+    overflow: hidden;
+    margin-left: 93px;
+    float: left;
+    background-color: rgb(229, 227, 223);
+
+    .gm-style-iw div div{
+      // width: 150px;
+      padding: 15px 15px  30px  15px;
+      h4 {
+        color: #44aedf;
+        margin: 10px 10px 20px -1px;
+        text-decoration: underline;
+        text-transform: uppercase;
+        cursor: pointer;
+        
+        &:before {
+          content: "";
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background-repeat: no-repeat;
+          background-image: url('../img/marker.png');
+          background-position: left center;
+        }
+      }
+
+      p {
+        margin: 3px 0;
+      }
+    }
+  }
+
+}
